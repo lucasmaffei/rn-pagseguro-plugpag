@@ -1,6 +1,6 @@
 {
-  "name": "react-native-pagseguro-plugpag",
-  "version": "0.1.1",
+  "name": "rn-pagseguro-plugpag",
+  "version": "1.0.0",
   "description": "Integre facilmente as principais formas de pagamento da PagSeguro em seus aplicativos React Native através deste módulo nativo.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -47,19 +47,20 @@
     "pagseguro",
     "plugpag"
   ],
-  "repository": "https://github.com/brunodsazevedo/react-native-pagseguro-plugpag",
-  "author": "brunodsazevedo <bruno.ds.azevedo@gmail.com> (https://github.com/brunodsazevedo)",
+  "repository": "https://github.com/lucasmaffei/rn-pagseguro-plugpag",
+  "author": "lucasmaffei <lucasmaffei@gmail.com> (https://github.com/lucasmaffei)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/brunodsazevedo/react-native-pagseguro-plugpag/issues"
+    "url": "https://github.com/lucasmaffei/rn-pagseguro-plugpag/issues"
   },
-  "homepage": "https://github.com/brunodsazevedo/react-native-pagseguro-plugpag#readme",
+  "homepage": "https://github.com/lucasmaffei/rn-pagseguro-plugpag#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.2.2",
+    "@react-native-community/bob": "^0.17.1",
     "@react-native-community/eslint-config": "^3.0.2",
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/jest": "^28.1.2",
@@ -81,7 +82,7 @@
     "react-native-builder-bob": "^0.20.0",
     "release-it": "^15.0.0",
     "turbo": "^1.10.7",
-    "typescript": "^5.0.2"
+    "typescript": "^5.8.3"
   },
   "resolutions": {
     "@types/react": "17.0.21"

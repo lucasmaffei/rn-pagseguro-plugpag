@@ -83,6 +83,14 @@ export type TransactionPaymentEventProps = {
   message: string;
 };
 
+export type AbortResponseProps = {
+  result: boolean;
+};
+
+export type ReadNFCCardResponseProps = {
+  uid: string;
+};
+
 import { useEffect, useState } from 'react';
 
 const { PagseguroPlugpag } = NativeModules;
@@ -151,42 +159,21 @@ export async function refundPayment(
   }
 }
 
-export async function print(filePath: string): Promise<any> {
+export async function print(filePath: string): Promise<void> {
   try {
-    const response = await PagseguroPlugpag.print(filePath);
-
-    // Emitir eventos para sucesso ou erro com base no resultado da impressão
-    if (response.retCode === 0) {
-      // 0 significa sucesso (PlugPag.RET_OK)
-      DeviceEventEmitter.emit('printSuccess', {
-        message: response.message,
-        errorCode: response.errorCode,
-      });
-      return response; // Retornar o resultado de sucesso diretamente
-    } else {
-      DeviceEventEmitter.emit('printError', {
-        message: response.message,
-        errorCode: response.errorCode,
-      });
-
-      // Enriquecer o objeto de erro com errorCode e retCode
-      const error = new Error(response.message);
-      (error as any).errorCode = response.errorCode;
-      (error as any).retCode = response.retCode;
-      throw error;
-    }
+    await PagseguroPlugpag.print(filePath);
   } catch (error) {
-    DeviceEventEmitter.emit('printError', {
-      message: 'Erro ao imprimir',
-      errorCode: 'PrintException',
-    });
+    console.error(error);
+    throw error;
+  }
+}
 
-    // Enriquecer o objeto de erro com retCode padrão se não estiver presente
-    if (!(error as any).retCode) {
-      (error as any).retCode = 'PrintException';
-    }
-
-    throw error; // Lançar o erro para que possa ser capturado por quem chamou a função
+export async function reprintCustomerReceipt(): Promise<void> {
+  try {
+    await PagseguroPlugpag.reprintCustomerReceipt();
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 }
 
@@ -201,6 +188,24 @@ export function useTransactionPaymentEvent() {
   }, []);
 
   return transactionPaymentEvent;
+}
+
+export async function doAbort(): Promise<AbortResponseProps> {
+  try {
+    return PagseguroPlugpag.doAbort();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function readNFCCard(): Promise<ReadNFCCardResponseProps> {
+  try {
+    return PagseguroPlugpag.readNFCCard();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 export default plugPag;

@@ -1,7 +1,8 @@
 <h1 align="center">
   <img alt="react-native-pagseguro-plugpag" title="react-native-pagseguro-plugpag" style="margin-bottom: 16px" src=".github/images/react-native-pagseguro-plugpag-logo.png" />
 
-  React Native Pagseguro Plugpag
+React Native Pagseguro Plugpag
+
 </h1>
 
 [README PORTUGUESE-BR VERSION](README-PORTUGUESE-BR.md)
@@ -17,16 +18,21 @@ React Native Pagseguro Plugpag is a library aimed at integrating with the native
 ## 🚀 Installation
 
 Installing with Yarn:
+
 ```sh
 yarn add react-native-pagseguro-plugpag
 ```
+
 Installing with npm:
+
 ```sh
 npm install react-native-pagseguro-plugpag
 ```
+
 ### Configuration in React Native
 
 Add this line to the file `/android/build.gradle`:
+
 ```
 buildscript {
   dependencies {
@@ -35,19 +41,23 @@ buildscript {
   }
 }
 ```
+
 and add this dependency to the file `/android/app/build.gradle`:
+
 ```
 dependencies {
     // ... other dependencies
-    implementation 'br.com.uol.pagseguro.plugpagservice.wrapper:wrapper:1.7.6'
+    implementation 'br.com.uol.pagseguro.plugpagservice.wrapper:wrapper:1.30.51'
     ...
 }
 ```
 
 ### Configuration in Expo
-***NOTE***: The library does not support running on ***Expo Go*** due to its handling of libraries. The PlugPag Wrapper library is designed for use with Pagseguro's Android devices. Therefore, you need to use ***expo-dev-client*** to expose the android folder of your Expo project.
+
+**_NOTE_**: The library does not support running on **_Expo Go_** due to its handling of libraries. The PlugPag Wrapper library is designed for use with Pagseguro's Android devices. Therefore, you need to use **_expo-dev-client_** to expose the android folder of your Expo project.
 
 Add the react-native-pagseguro-plugpag plugin to `app.json` or `app.config.js`:
+
 ```
 {
   "expo": {
@@ -57,28 +67,36 @@ Add the react-native-pagseguro-plugpag plugin to `app.json` or `app.config.js`:
   }
 }
 ```
+
 And to finalize, execute the prebuild step of expo to complete the configuration:
+
 ```
 npx expo prebuild -p android --clean
 ```
 
 ## 📖 Usage
 
-***initializeAndActivatePinPad***: initializes and activates the pin pad.
+**_initializeAndActivatePinPad_**: initializes and activates the pin pad.
 
-***doPayment***: performs communication and execution of financial transactions (debit card, credit card, voucher, and PIX).
+**_doPayment_**: performs communication and execution of financial transactions (debit card, credit card, voucher, and PIX).
 
-***refundPayment***: performs refunds of financial transactions.
+**_refundPayment_**: performs refunds of financial transactions.
 
-***print***: does customized printing from a JPEG/PNG file.
+**_print_**: does customized printing from a JPEG/PNG file.
 
-***useTransactionPaymentEvent***: hook for native events related to financial transactions.
+**_reprintCustomerReceipt_**: reprint customer receipt from the last transaction.
+
+**_doAbort_**: abort transaction in progress.
+
+**_readNFCCard_**: read NFC cards and return card UID.
+
+**_useTransactionPaymentEvent_**: hook for native events related to financial transactions.
 
 ### Usage Examples
 
 Example for activating a pin pad terminal.
 
-***NOTE***: For development terminals, the code `403938` is commonly used. If it doesn't work, contact Pagseguro support.
+**_NOTE_**: For development terminals, the code `403938` is commonly used. If it doesn't work, contact Pagseguro support.
 
 ```JS
 import { initializeAndActivatePinPad } from 'react-native-pagseguro-plugpag';
@@ -101,6 +119,7 @@ async function handleInitializeAndActivatePinPad() {
 ```
 
 Example for making credit card transactions with R$ 25.00:
+
 ```js
 import { plugPag, doPayment } from 'react-native-pagseguro-plugpag';
 
@@ -126,6 +145,7 @@ async function handleDoPaymentCreditType() {
 ```
 
 Example for making debit card transactions with R$ 25.00:
+
 ```js
 import { plugPag, doPayment } from 'react-native-pagseguro-plugpag';
 
@@ -172,6 +192,59 @@ async function handleRefundLastTransaction() {
 
     setIsModalVisible(false);
     Alert.alert('Refund', 'An error occurred while processing the refund');
+  }
+}
+```
+
+Example for reprinting customer receipt:
+
+```JS
+import { reprintCustomerReceipt } from 'react-native-pagseguro-plugpag';
+
+async function handleReprintCustomerReceipt() {
+  try {
+    await reprintCustomerReceipt();
+    Alert.alert('Receipt reprinted successfully');
+  } catch (error) {
+    console.log(error);
+    Alert.alert('Error reprinting receipt');
+  }
+}
+```
+
+Example for aborting transaction in progress:
+
+```JS
+import { doAbort } from 'react-native-pagseguro-plugpag';
+
+async function handleAbortTransaction() {
+  try {
+    const response = await doAbort();
+
+    if (response.result) {
+      Alert.alert('Transaction aborted successfully');
+    } else {
+      Alert.alert('Could not abort transaction');
+    }
+  } catch (error) {
+    console.log(error);
+    Alert.alert('Error aborting transaction');
+  }
+}
+```
+
+Example for reading NFC card:
+
+```JS
+import { readNFCCard } from 'react-native-pagseguro-plugpag';
+
+async function handleReadNFCCard() {
+  try {
+    const response = await readNFCCard();
+    Alert.alert('NFC Card read', `UID: ${response.uid}`);
+  } catch (error) {
+    console.log(error);
+    Alert.alert('Error reading NFC card');
   }
 }
 ```
