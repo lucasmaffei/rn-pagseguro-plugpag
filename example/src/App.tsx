@@ -19,9 +19,9 @@ import {
   refundPayment,
   plugPag,
   type PaymentTransactionResponseProps,
-} from 'react-native-pagseguro-plugpag';
+} from 'rn-pagseguro-plugpag';
 
-import LogoImg from './assets/react-native-pagseguro-plugpag-logo.png';
+import LogoImg from './assets/rn-pagseguro-plugpag-logo.png';
 
 export default function App() {
   const [isModalVisible, setIsModalVisible] = useState(false);
